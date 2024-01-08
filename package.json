@@ -1,16 +1,20 @@
 {
-    "name": "react-icons-converter",
+    "name": "@milu/react-icons-converter",
+    "version": "4.12.0",
     "description": "SVG icon converter to format required for use with react-icons package",
-    "version": "1.1.4",
-    "type": "module",
-    "author": "Dmitry <dmitry@cojam.ru> (https://e965.ru)",
-    "repository": "https://github.com/e965/react-icons-converter.git",
-    "license": "MIT",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
+    "type": "module",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/patelmilanun/react-icons-converter.git"
+    },
     "keywords": [
         "react-icons"
     ],
+    "author": "Milan Patel",
+    "license": "ISC",
+    "homepage": "https://github.com/patelmilanun/react-icons-converter#readme",
     "files": [
         "lib/",
         "src/"
@@ -31,22 +35,23 @@
         ]
     },
     "dependencies": {
-        "camelcase": "6.2.0",
-        "fast-xml-parser": "3.19.0",
+        "camelcase": "8.0.0",
+        "fast-xml-parser": "4.3.2",
         "react-icons-lib-only": "4.2.0"
     },
     "devDependencies": {
-        "@types/react": "17.0.11",
-        "@typescript-eslint/eslint-plugin": "4.27.0",
-        "@typescript-eslint/parser": "4.27.0",
-        "del-cli": "4.0.0",
-        "eslint": "7.29.0",
-        "eslint-config-prettier": "8.3.0",
-        "eslint-plugin-prettier": "3.4.0",
-        "husky": "6.0.0",
-        "is-ci": "3.0.0",
-        "lint-staged": "11.0.0",
-        "prettier": "2.3.1",
-        "typescript": "4.3.4"
+        "@types/node": "20.10.7",
+        "@types/react": "18.2.47",
+        "@typescript-eslint/eslint-plugin": "6.18.0",
+        "@typescript-eslint/parser": "6.18.0",
+        "del-cli": "5.1.0",
+        "eslint": "8.56.0",
+        "eslint-config-prettier": "9.1.0",
+        "eslint-plugin-prettier": "5.1.2",
+        "husky": "8.0.3",
+        "is-ci": "3.0.1",
+        "lint-staged": "15.2.0",
+        "prettier": "3.1.1",
+        "typescript": "5.3.3"
     }
 }

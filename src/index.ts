@@ -1,4 +1,4 @@
-import { parse as parseXML } from 'fast-xml-parser';
+import { XMLParser as parseXML } from 'fast-xml-parser';
 import type { X2jOptions as XMLParserOptionsType } from 'fast-xml-parser';
 
 import type { IconTree as IconTreeType } from 'react-icons-lib-only';
@@ -9,17 +9,17 @@ export const createIconTreeFromSVG = (svgSource: string, isMultiColor: boolean):
     const XMLParserOptions: Partial<XMLParserOptionsType> = {
         ignoreAttributes: false,
         attributeNamePrefix: '',
-        attrNodeName: 'attributes',
+        attributesGroupName: 'attributes',
         textNodeName: '#text',
         allowBooleanAttributes: true,
         trimValues: false,
-        arrayMode: true,
     };
 
-    const XMLParserOptionForAttr = String(XMLParserOptions.attrNodeName ?? '');
+    const XMLParserOptionForAttr = String(XMLParserOptions.attributesGroupName ?? '');
     const XMLParserOptionForText = String(XMLParserOptions.textNodeName ?? '');
 
-    const SVGObject = parseXML(svgSource, XMLParserOptions);
+    const parser = new parseXML(XMLParserOptions);
+    const SVGObject = parser.parse(svgSource);
 
     const SVGObjectRootNodeName = Object.keys(SVGObject)[0];
 
@@ -56,21 +56,39 @@ export const createIconTreeFromSVG = (svgSource: string, isMultiColor: boolean):
     };
 
     const createTreeFromSVGObject = (svgObjects: typeof SVGObject, nodeName: string): IconTreeType[] => {
-        return svgObjects.map((svgObject: typeof SVGObject) => {
-            let childrenKeys = Object.keys(svgObject).filter(key => {
+        if (Array.isArray(svgObjects))
+            return svgObjects.map((svgObject: typeof SVGObject) => {
+                let childrenKeys = Object.keys(svgObject).filter(key => {
+                    return !['style', XMLParserOptionForAttr, XMLParserOptionForText, 'defs', 'use'].includes(key);
+                });
+
+                // put at the end of the array of keys
+                if (svgObject.defs) childrenKeys = [...childrenKeys, 'defs'];
+                if (svgObject.use) childrenKeys = [...childrenKeys, 'use'];
+
+                return {
+                    tag: nodeName,
+                    attr: createTreeAttrObject(svgObject[XMLParserOptionForAttr] ?? {}, nodeName),
+                    child: childrenKeys.flatMap(key => createTreeFromSVGObject(svgObject[key], key)),
+                };
+            });
+        else {
+            let childrenKeys = Object.keys(svgObjects).filter(key => {
                 return !['style', XMLParserOptionForAttr, XMLParserOptionForText, 'defs', 'use'].includes(key);
             });
 
             // put at the end of the array of keys
-            if (svgObject.defs) childrenKeys = [...childrenKeys, 'defs'];
-            if (svgObject.use) childrenKeys = [...childrenKeys, 'use'];
+            if (svgObjects.defs) childrenKeys = [...childrenKeys, 'defs'];
+            if (svgObjects.use) childrenKeys = [...childrenKeys, 'use'];
 
-            return {
-                tag: nodeName,
-                attr: createTreeAttrObject(svgObject[XMLParserOptionForAttr] ?? {}, nodeName),
-                child: childrenKeys.flatMap(key => createTreeFromSVGObject(svgObject[key], key)),
-            };
-        });
+            return [
+                {
+                    tag: nodeName,
+                    attr: createTreeAttrObject(svgObjects[XMLParserOptionForAttr] ?? {}, nodeName),
+                    child: childrenKeys.flatMap(key => createTreeFromSVGObject(svgObjects[key], key)),
+                },
+            ];
+        }
     };
 
     const TreeFromSVGObject = createTreeFromSVGObject(SVGObject[SVGObjectRootNodeName], SVGObjectRootNodeName);
