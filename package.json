@@ -1,5 +1,5 @@
 {
-    "name": "@milu/react-icons-converter",
+    "name": "@hexazexa/react-icons-converter",
     "version": "4.12.0",
     "description": "SVG icon converter to format required for use with react-icons package",
     "main": "lib/index.js",

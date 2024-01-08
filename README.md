@@ -1,4 +1,4 @@
-# @milu/react-icons-converter
+# @hexazexa/react-icons-converter
 
 SVG icon converter to format required for use with [react-icons](https://www.npmjs.com/package/react-icons) package.
 
@@ -8,13 +8,13 @@ The source code was taken from [react-icons/logics.js](https://github.com/react-
 
 ### Installation
 
--   `npm i @milu/react-icons-converter`
+-   `npm i @hexazexa/react-icons-converter`
 
 ### Usage example
 
 ```js
 import { GenIcon } from 'react-icons';
-import { createIconTreeFromSVG } from '@milu/react-icons-converter';
+import { createIconTreeFromSVG } from '@hexazexa/react-icons-converter';
 
 const SVGSource = ` /* here will be the source code of your svg icon */ `;
 
